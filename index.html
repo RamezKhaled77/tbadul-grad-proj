@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تبادُل — منصة الكوميونيتي الجامعي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#13211D;
+  --ink-soft:#5C6B66;
+  --paper:#F6F7F5;
+  --surface:#FFFFFF;
+  --line:#E2E6E3;
+  --swap:#0F6B5C;
+  --swap-soft:#E6F2EF;
+  --paid:#B57A12;
+  --paid-soft:#FBF1DF;
+  --alert:#B33A32;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  font-size:15px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+:focus-visible{outline:2px solid var(--swap);outline-offset:3px;border-radius:4px}
+
+/* ---------- Shell ---------- */
+.app{max-width:1180px;margin:0 auto;padding:0 20px 80px}
+
+header.top{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 0;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--paper);z-index:50;
+  flex-wrap:wrap;gap:12px;
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark{
+  width:34px;height:34px;border-radius:9px;
+  background:var(--swap);position:relative;flex-shrink:0;
+}
+.brand-mark::before,.brand-mark::after{
+  content:'';position:absolute;background:#fff;border-radius:2px;
+}
+.brand-mark::before{width:14px;height:2.5px;top:12px;right:10px}
+.brand-mark::after{width:14px;height:2.5px;top:19px;right:10px;background:#F2C673}
+.brand h1{font-size:19px;font-weight:700;letter-spacing:-.2px}
+.brand span{display:block;font-size:11.5px;color:var(--ink-soft);font-weight:400;line-height:1.2}
+
+nav.tabs{display:flex;gap:2px;background:#ECEFEC;padding:4px;border-radius:12px;flex-wrap:wrap}
+nav.tabs button{
+  padding:8px 15px;border-radius:9px;font-size:13.5px;font-weight:500;
+  color:var(--ink-soft);transition:background .15s,color .15s;
+}
+nav.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+
+.me{display:flex;align-items:center;gap:9px}
+.avatar{
+  width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  font-weight:600;font-size:13px;color:#fff;flex-shrink:0;
+}
+.me-name{font-size:13.5px;font-weight:600;line-height:1.25}
+.me-sub{font-size:11.5px;color:var(--ink-soft);line-height:1.25}
+
+/* ---------- Generic ---------- */
+.panel{display:none}
+.panel.active{display:block;animation:in .25s ease}
+@keyframes in{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.panel.active{animation:none}*{transition:none!important}}
+
+.section-head{margin:34px 0 16px}
+.section-head h2{font-size:21px;font-weight:600;letter-spacing:-.3px}
+.section-head p{font-size:13.5px;color:var(--ink-soft);margin-top:3px}
+
+.card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;padding:18px;
+}
+
+.pill{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:20px;
+}
+.pill.swap{background:var(--swap-soft);color:var(--swap)}
+.pill.paid{background:var(--paid-soft);color:var(--paid)}
+.pill.urgent{background:#FBE9E7;color:var(--alert)}
+.pill.ghost{background:#EEF1EF;color:var(--ink-soft)}
+
+.btn{
+  padding:9px 17px;border-radius:10px;font-size:13.5px;font-weight:600;
+  transition:opacity .15s,background .15s;
+}
+.btn:hover{opacity:.88}
+.btn-swap{background:var(--swap);color:#fff}
+.btn-paid{background:var(--paid);color:#fff}
+.btn-quiet{background:#EEF1EF;color:var(--ink)}
+.btn-line{border:1px solid var(--line);background:var(--surface)}
+.btn-sm{padding:6px 12px;font-size:12.5px;border-radius:8px}
+
+/* ---------- Hero / Match ---------- */
+.hero{
+  background:var(--surface);border:1px solid var(--line);border-radius:18px;
+  padding:26px;margin-top:24px;
+}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.hero h2{font-size:24px;font-weight:700;letter-spacing:-.5px;line-height:1.35}
+.hero p.lede{color:var(--ink-soft);font-size:14px;max-width:52ch;margin-top:6px}
+
+.swap-viz{
+  display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch;
+  margin-top:22px;
+}
+.swap-party{
+  border:1px solid var(--line);border-radius:14px;padding:16px;background:#FCFDFC;
+}
+.swap-party.mine{border-color:var(--swap);background:var(--swap-soft)}
+.party-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.party-head strong{font-size:14.5px;font-weight:600;display:block;line-height:1.3}
+.party-head small{font-size:11.5px;color:var(--ink-soft)}
+.skill-row{font-size:13px;display:flex;gap:7px;align-items:flex-start;padding:5px 0}
+.skill-row b{font-weight:600;color:var(--ink)}
+.skill-label{color:var(--ink-soft);flex-shrink:0;font-size:12px;padding-top:1px}
+
+.swap-arrows{
+  display:flex;flex-direction:column;justify-content:center;gap:10px;
+  min-width:78px;text-align:center;
+}
+.arrow{
+  background:var(--surface);border:1px solid var(--line);border-radius:20px;
+  padding:5px 10px;font-size:11.5px;font-weight:600;color:var(--swap);
+  white-space:nowrap;
+}
+.match-score{
+  font-size:26px;font-weight:700;color:var(--swap);line-height:1;
+}
+.match-score span{font-size:12px;font-weight:500;color:var(--ink-soft);display:block;margin-top:3px}
+
+/* ---------- Feed ---------- */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.filters button{
+  padding:7px 14px;border-radius:20px;font-size:13px;font-weight:500;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);
+}
+.filters button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.feed{display:flex;flex-direction:column;gap:12px}
+.post{
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:17px;display:flex;gap:14px;
+}
+.post.hidden{display:none}
+.post-body{flex:1;min-width:0}
+.post-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:7px}
+.post-meta .who{font-size:13.5px;font-weight:600}
+.post-meta .when{font-size:12px;color:var(--ink-soft)}
+.post h3{font-size:15.5px;font-weight:600;margin-bottom:5px;letter-spacing:-.2px}
+.post p{font-size:13.5px;color:var(--ink-soft);margin-bottom:11px}
+.post-foot{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.price{font-weight:700;font-size:15px;color:var(--paid)}
+.trade{font-weight:600;font-size:13px;color:var(--swap)}
+
+/* ---------- Profile ---------- */
+.grid-2{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.stat{background:#FCFDFC;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.stat b{display:block;font-size:20px;font-weight:700;line-height:1.2}
+.stat small{font-size:11.5px;color:var(--ink-soft)}
+
+.tag-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.tag{
+  font-size:12.5px;padding:5px 11px;border-radius:8px;
+  background:#EEF1EF;color:var(--ink);font-weight:500;
+}
+.tag.need{background:var(--paid-soft);color:var(--paid)}
+.tag.have{background:var(--swap-soft);color:var(--swap)}
+
+.badge-row{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.badge{display:flex;gap:11px;align-items:flex-start}
+.badge-icon{
+  width:32px;height:32px;border-radius:9px;display:grid;place-items:center;
+  font-size:15px;flex-shrink:0;background:var(--swap-soft);
+}
+.badge b{font-size:13.5px;font-weight:600;display:block;line-height:1.35}
+.badge small{font-size:12px;color:var(--ink-soft)}
+
+/* ---------- Orders ---------- */
+.order{
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  padding:16px;margin-bottom:11px;
+}
+.order-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start}
+.order h3{font-size:15px;font-weight:600}
+.order .with{font-size:12.5px;color:var(--ink-soft);margin-top:2px}
+.steps{display:flex;gap:6px;margin-top:14px;align-items:center}
+.step{flex:1;height:4px;border-radius:3px;background:#E8ECE9}
+.step.done{background:var(--swap)}
+.step.done.paid-track{background:var(--paid)}
+.step-labels{display:flex;justify-content:space-between;margin-top:7px;font-size:11.5px;color:var(--ink-soft)}
+.escrow{
+  margin-top:13px;background:var(--paid-soft);border-radius:10px;padding:10px 13px;
+  font-size:12.5px;color:var(--paid);font-weight:500;
+}
+
+/* ---------- Groups ---------- */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.group-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.group-card h3{font-size:15px;font-weight:600;margin-bottom:4px}
+.group-card p{font-size:12.5px;color:var(--ink-soft);margin-bottom:12px}
+
+.board{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.board-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line)}
+.board-row:last-child{border-bottom:none}
+.rank{font-size:13px;font-weight:700;color:var(--ink-soft);width:18px}
+.board-row .who{flex:1;font-size:13.5px;font-weight:600}
+.board-row .count{font-size:12.5px;color:var(--ink-soft)}
+
+/* ---------- Modal ---------- */
+.overlay{
+  position:fixed;inset:0;background:rgba(19,33,29,.45);
+  display:none;place-items:center;padding:20px;z-index:100;
+}
+.overlay.open{display:grid}
+.modal{
+  background:var(--surface);border-radius:18px;padding:24px;
+  max-width:440px;width:100%;max-height:90vh;overflow:auto;
+}
+.modal h3{font-size:18px;font-weight:600;margin-bottom:6px}
+.modal p{font-size:13.5px;color:var(--ink-soft);margin-bottom:16px}
+.modal-actions{display:flex;gap:9px;margin-top:18px}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:12.5px;font-weight:600;margin-bottom:5px}
+.field input,.field select,.field textarea{
+  width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;
+  font-family:inherit;font-size:13.5px;background:#FCFDFC;color:var(--ink);
+}
+.field textarea{resize:vertical;min-height:70px}
+
+/* ---------- Chat ---------- */
+.chat{display:grid;grid-template-columns:280px 1fr;gap:14px;height:540px}
+.thread-list{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:auto}
+.thread{
+  display:flex;gap:11px;padding:13px 14px;border-bottom:1px solid var(--line);
+  cursor:pointer;transition:background .12s;text-align:right;width:100%;
+}
+.thread:hover{background:#FAFBFA}
+.thread[aria-current="true"]{background:var(--swap-soft)}
+.thread-body{flex:1;min-width:0}
+.thread-body b{font-size:13.5px;font-weight:600;display:block}
+.thread-body small{font-size:12px;color:var(--ink-soft);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chat-main{background:var(--surface);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;overflow:hidden}
+.chat-head{padding:13px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.chat-head b{font-size:14.5px;font-weight:600;display:block;line-height:1.3}
+.chat-head small{font-size:12px;color:var(--ink-soft)}
+.chat-log{flex:1;overflow:auto;padding:18px 16px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:74%;padding:10px 14px;border-radius:14px;font-size:13.5px;line-height:1.55}
+.msg.them{background:#F0F2F1;border-top-right-radius:4px;align-self:flex-start}
+.msg.me{background:var(--swap);color:#fff;border-top-left-radius:4px;align-self:flex-end}
+.msg time{display:block;font-size:10.5px;opacity:.65;margin-top:4px}
+.sys-msg{
+  align-self:center;background:var(--paid-soft);color:var(--paid);
+  font-size:12px;font-weight:600;padding:7px 14px;border-radius:20px;text-align:center;
+}
+.chat-bar{padding:12px 14px;border-top:1px solid var(--line);display:flex;gap:9px}
+.chat-bar input{
+  flex:1;padding:10px 14px;border:1px solid var(--line);border-radius:22px;
+  font-family:inherit;font-size:13.5px;background:#FCFDFC;color:var(--ink);
+}
+
+/* ---------- Drawer (profile) ---------- */
+.drawer-wrap{position:fixed;inset:0;z-index:120;display:none}
+.drawer-wrap.open{display:block}
+.drawer-bg{position:absolute;inset:0;background:rgba(19,33,29,.4)}
+.drawer{
+  position:absolute;top:0;left:0;height:100%;width:400px;max-width:92vw;
+  background:var(--surface);overflow:auto;padding:22px;
+  box-shadow:4px 0 24px rgba(0,0,0,.1);
+}
+.drawer-close{position:absolute;top:16px;left:16px;font-size:20px;color:var(--ink-soft);line-height:1}
+
+/* ---------- Notifications ---------- */
+.notif{display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);align-items:flex-start}
+.notif:last-child{border-bottom:none}
+.notif.unread{background:var(--swap-soft)}
+.notif-dot{width:8px;height:8px;border-radius:50%;background:var(--swap);margin-top:7px;flex-shrink:0}
+.notif-dot.empty{background:transparent}
+.notif-body{flex:1}
+.notif-body b{font-size:13.5px;font-weight:600}
+.notif-body p{font-size:12.5px;color:var(--ink-soft);margin:2px 0 0}
+.notif-body time{font-size:11.5px;color:var(--ink-soft)}
+
+.bell{position:relative;padding:7px;border-radius:9px;font-size:17px;line-height:1}
+.bell:hover{background:#ECEFEC}
+.bell span{
+  position:absolute;top:2px;left:2px;background:var(--alert);color:#fff;
+  font-size:9.5px;font-weight:700;min-width:15px;height:15px;border-radius:8px;
+  display:grid;place-items:center;padding:0 3px;
+}
+
+/* ---------- Login gate ---------- */
+.gate{
+  position:fixed;inset:0;background:var(--paper);z-index:300;
+  display:grid;place-items:center;padding:24px;
+}
+.gate.hide{display:none}
+.gate-box{max-width:400px;width:100%;text-align:center}
+.gate-box .brand-mark{width:46px;height:46px;margin:0 auto 16px;border-radius:13px}
+.gate-box .brand-mark::before{width:20px;height:3px;top:16px;right:13px}
+.gate-box .brand-mark::after{width:20px;height:3px;top:26px;right:13px}
+.gate-box h2{font-size:25px;font-weight:700;letter-spacing:-.5px}
+.gate-box p{font-size:14px;color:var(--ink-soft);margin:8px 0 22px}
+.gate-field{display:flex;gap:8px}
+.gate-field input{
+  flex:1;padding:12px 15px;border:1px solid var(--line);border-radius:11px;
+  font-family:inherit;font-size:14px;background:var(--surface);color:var(--ink);text-align:right;
+}
+.gate-note{font-size:12.5px;color:var(--ink-soft);margin-top:16px}
+
+.linkish{font-weight:600;color:var(--swap);text-decoration:underline;text-underline-offset:3px}
+
+.toast{
+  position:fixed;bottom:22px;right:50%;transform:translateX(50%) translateY(120px);
+  background:var(--ink);color:#fff;padding:12px 20px;border-radius:12px;
+  font-size:13.5px;font-weight:500;z-index:200;transition:transform .28s ease;
+}
+.toast.show{transform:translateX(50%) translateY(0)}
+
+.note{
+  font-size:12.5px;color:var(--ink-soft);background:#EEF1EF;
+  border-radius:10px;padding:11px 14px;margin-top:14px;
+}
+
+@media(max-width:860px){
+  .grid-2,.grid-3,.swap-viz{grid-template-columns:1fr}
+  .swap-arrows{flex-direction:row;justify-content:center;padding:4px 0}
+  .stat-row{grid-template-columns:repeat(2,1fr)}
+  nav.tabs{width:100%;order:3}
+  nav.tabs button{flex:1;text-align:center;padding:8px 6px;font-size:12.5px}
+  .chat{grid-template-columns:1fr;height:auto}
+  .thread-list{max-height:200px}
+  .chat-main{height:420px}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<header class="top">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true"></div>
+    <div>
+      <h1>تبادُل</h1>
+      <span>كلية الحاسبات والمعلومات</span>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="أقسام المنصة">
+    <button role="tab" aria-selected="true" data-tab="match">المطابقة</button>
+    <button role="tab" aria-selected="false" data-tab="feed">الفرص</button>
+    <button role="tab" aria-selected="false" data-tab="chat">المحادثات</button>
+    <button role="tab" aria-selected="false" data-tab="orders">طلباتي</button>
+    <button role="tab" aria-selected="false" data-tab="community">المجتمع</button>
+    <button role="tab" aria-selected="false" data-tab="profile">حسابي</button>
+  </nav>
+
+  <div class="me">
+    <button class="bell" onclick="goTab('notifs')" aria-label="الإشعارات">🔔<span id="bellCount">٣</span></button>
+    <div class="avatar" style="background:#0F6B5C">ي م</div>
+    <div>
+      <div class="me-name">يوسف مراد</div>
+      <div class="me-sub">سنة رابعة · 4.8 ★</div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ المطابقة ============ -->
+<section class="panel active" id="panel-match">
+  <div class="hero">
+    <div class="hero-top">
+      <div>
+        <h2>لقينالك تبادُل مناسب</h2>
+        <p class="lede">أنت محتاج تصميم هوية بصرية، وسلمى محتاجة حد يبنيلها موقع. المهارة اللي عندك هي بالظبط اللي ناقصاها.</p>
+      </div>
+      <div style="text-align:center">
+        <div class="match-score">100%<span>تطابق متبادل</span></div>
+      </div>
+    </div>
+
+    <div class="swap-viz">
+      <div class="swap-party mine">
+        <div class="party-head">
+          <div class="avatar" style="background:#0F6B5C">ي م</div>
+          <div>
+            <strong>يوسف مراد (أنت)</strong>
+            <small>حاسبات · سنة رابعة</small>
+          </div>
+        </div>
+        <div class="skill-row"><span class="skill-label">بتقدم</span><b>تطوير مواقع بـ React</b></div>
+        <div class="skill-row"><span class="skill-label">محتاج</span><b>تصميم هوية بصرية</b></div>
+      </div>
+
+      <div class="swap-arrows" aria-hidden="true">
+        <div class="arrow">موقع ←</div>
+        <div class="arrow">→ تصميم</div>
+      </div>
+
+      <div class="swap-party">
+        <div class="party-head">
+          <div class="avatar" style="background:#B57A12">س ع</div>
+          <div>
+            <strong><button class="linkish" onclick="openProfile('salma')">سلمى عادل</button></strong>
+            <small>فنون تطبيقية · سنة تالتة · 4.9 ★</small>
+          </div>
+        </div>
+        <div class="skill-row"><span class="skill-label">بتقدم</span><b>تصميم هوية بصرية</b></div>
+        <div class="skill-row"><span class="skill-label">محتاجة</span><b>تطوير مواقع بـ React</b></div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:9px;margin-top:20px;flex-wrap:wrap">
+      <button class="btn btn-swap" onclick="openModal('swap')">ابعت طلب تبادل</button>
+      <button class="btn btn-line" onclick="toast('اتحفظت في المطابقات المحفوظة')">احفظها لبعدين</button>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>مطابقات تانية قريبة منك</h2>
+    <p>مرتبة حسب نسبة التوافق بين اللي بتقدمه واللي محتاجه</p>
+  </div>
+
+  <div class="feed">
+    <div class="post">
+      <div class="avatar" style="background:#4A6B8A">م ط</div>
+      <div class="post-body">
+        <div class="post-meta">
+          <button class="who linkish" onclick="openProfile('marwan')">مروان طارق</button>
+          <span class="pill swap">تطابق 80%</span>
+          <span class="when">هندسة · سنة تانية</span>
+        </div>
+        <h3>محتاج مساعدة في هياكل البيانات، وبيقدم مونتاج فيديو</h3>
+        <p>أنت مذاكر المادة دي وخدت فيها امتياز، وهو بيقدم مونتاج وأنت محتاجه لمشروع التخرج.</p>
+        <div class="post-foot">
+          <button class="btn btn-swap btn-sm" onclick="openModal('swap')">ابعت طلب تبادل</button>
+          <button class="btn btn-quiet btn-sm" onclick="toast('تم تجاهل المطابقة')">مش دلوقتي</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="post">
+      <div class="avatar" style="background:#7A5B9B">ن ح</div>
+      <div class="post-body">
+        <div class="post-meta">
+          <span class="who">نورهان حسام</span>
+          <span class="pill swap">تطابق 60%</span>
+          <span class="when">ألسن · سنة رابعة</span>
+        </div>
+        <h3>بتقدم ترجمة أكاديمية، ومحتاجة حد يظبطلها CV</h3>
+        <p>تطابق من طرف واحد — هي محتاجة مهارة عندك، بس اللي بتقدمه مش في قايمة احتياجاتك دلوقتي.</p>
+        <div class="post-foot">
+          <button class="btn btn-line btn-sm" onclick="toast('اتبعت كمساعدة مجانية — هتترصد في رصيدك المجتمعي')">ساعدها مجاناً</button>
+          <button class="btn btn-quiet btn-sm" onclick="toast('تم تجاهل المطابقة')">مش دلوقتي</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    خوارزمية المطابقة بتدور على تطابق متبادل بين «اللي بتقدمه» و«اللي محتاجه» عند كل طالب. لو مفيش تطابق كامل، بتعرض تطابق من طرف واحد كخيار مساعدة مجانية بترصد رصيد مجتمعي.
+  </div>
+</section>
+
+<!-- ============ الفرص ============ -->
+<section class="panel" id="panel-feed">
+  <div class="section-head">
+    <h2>الفرص المتاحة دلوقتي</h2>
+    <p>طلبات وخدمات من طلاب الكلية — مدفوعة أو بالتبادل</p>
+  </div>
+
+  <div class="filters" role="group" aria-label="فلترة الفرص">
+    <button aria-pressed="true" data-filter="all">الكل</button>
+    <button aria-pressed="false" data-filter="paid">مدفوع</button>
+    <button aria-pressed="false" data-filter="swap">تبادل</button>
+    <button aria-pressed="false" data-filter="urgent">عاجل</button>
+  </div>
+
+  <div class="feed" id="feedList">
+    <article class="post" data-kind="paid urgent">
+      <div class="avatar" style="background:#B57A12">أ ش</div>
+      <div class="post-body">
+        <div class="post-meta">
+          <button class="who linkish" onclick="openProfile('ahmed')">أحمد شريف</button>
+          <span class="pill paid">مدفوع</span>
+          <span class="pill urgent">عاجل · باقي يومين</span>
+          <span class="when">من ساعتين</span>
+        </div>
+        <h3>محتاج تصميم بوستر ورول أب لفعالية النادي</h3>
+        <p>فعالية يوم الخميس، محتاج التصميمين بمقاسات الطباعة جاهزة. عندي المحتوى واللوجو.</p>
+        <div class="post-foot">
+          <span class="price">٣٥٠ ج</span>
+          <button class="btn btn-paid btn-sm" onclick="openModal('paid')">قدّم عرضك</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="post" data-kind="swap">
+      <div class="avatar" style="background:#0F6B5C">ل ع</div>
+      <div class="post-body">
+        <div class="post-meta">
+          <span class="who">ليلى عماد</span>
+          <span class="pill swap">تبادل</span>
+          <span class="when">من ٥ ساعات</span>
+        </div>
+        <h3>محتاجة حد يشرحلي قواعد البيانات — وأقدم تصوير فوتوغرافي</h3>
+        <p>محتاجة مراجعة الـ Normalization و الـ SQL Joins قبل الميدترم. بقدم تصوير احترافي لمشاريع أو بورتفوليو.</p>
+        <div class="post-foot">
+          <span class="trade">مقابل: تصوير فوتوغرافي</span>
+          <button class="btn btn-swap btn-sm" onclick="openModal('swap')">ابعت طلب تبادل</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="post" data-kind="paid">
+      <div class="avatar" style="background:#4A6B8A">ك ي</div>
+      <div class="post-body">
+        <div class="post-meta">
+          <span class="who">كريم ياسر</span>
+          <span class="pill paid">مدفوع</span>
+          <span class="when">امبارح</span>
+        </div>
+        <h3>بقدم تفريغ ومونتاج محاضرات مسجلة</h3>
+        <p>تفريغ نصي منظم + مونتاج للفيديو مع فهرسة بالمواضيع. التسليم خلال ٣ أيام.</p>
+        <div class="post-foot">
+          <span class="price">١٢٠ ج / محاضرة</span>
+          <button class="btn btn-paid btn-sm" onclick="openModal('paid')">اطلب الخدمة</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="post" data-kind="swap urgent">
+      <div class="avatar" style="background:#7A5B9B">ه م</div>
+      <div class="post-body">
+        <div class="post-meta">
+          <span class="who">هدير محمود</span>
+          <span class="pill swap">تبادل</span>
+          <span class="pill urgent">عاجل · النهاردة</span>
+          <span class="when">من ٤٠ دقيقة</span>
+        </div>
+        <h3>محتاجة مراجعة سريعة لعرض تقديمي — وأقدم كتابة محتوى</h3>
+        <p>العرض جاهز ومحتاج مراجعة تصميم وترتيب الشرايح قبل بكرة الصبح.</p>
+        <div class="post-foot">
+          <span class="trade">مقابل: كتابة محتوى</span>
+          <button class="btn btn-swap btn-sm" onclick="openModal('swap')">ابعت طلب تبادل</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="post" data-kind="paid">
+      <div class="avatar" style="background:#0F6B5C">م ع</div>
+      <div class="post-body">
+        <div class="post-meta">
+          <span class="who">منة علي</span>
+          <span class="pill paid">مدفوع</span>
+          <span class="when">من يومين</span>
+        </div>
+        <h3>بقدم دروس خصوصية في الرياضيات المتقطعة</h3>
+        <p>جلسات فردية أو مجموعات صغيرة، حضوري في الكلية أو أونلاين.</p>
+        <div class="post-foot">
+          <span class="price">٨٠ ج / ساعة</span>
+          <button class="btn btn-paid btn-sm" onclick="openModal('paid')">احجز جلسة</button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <button class="btn btn-line" style="margin-top:18px;width:100%;padding:13px" onclick="openModal('new')">انشر فرصة جديدة</button>
+</section>
+
+<!-- ============ المحادثات ============ -->
+<section class="panel" id="panel-chat">
+  <div class="section-head">
+    <h2>المحادثات</h2>
+    <p>كل الاتفاقات بتتم جوه المنصة — عشان يفضل في سجل واضح لو حصل أي خلاف</p>
+  </div>
+
+  <div class="chat">
+    <div class="thread-list" id="threadList">
+      <button class="thread" aria-current="true" data-thread="salma">
+        <div class="avatar" style="background:#B57A12">س ع</div>
+        <div class="thread-body">
+          <b>سلمى عادل</b>
+          <small>تمام، هبعتلك أول نسخة بكرة</small>
+        </div>
+      </button>
+      <button class="thread" aria-current="false" data-thread="ahmed">
+        <div class="avatar" style="background:#4A6B8A">أ ش</div>
+        <div class="thread-body">
+          <b>أحمد شريف</b>
+          <small>البوستر وصلني، شكراً!</small>
+        </div>
+      </button>
+      <button class="thread" aria-current="false" data-thread="marwan">
+        <div class="avatar" style="background:#7A5B9B">م ط</div>
+        <div class="thread-body">
+          <b>مروان طارق</b>
+          <small>الجلسة الجاية الأحد صح؟</small>
+        </div>
+      </button>
+    </div>
+
+    <div class="chat-main">
+      <div class="chat-head">
+        <div class="avatar" id="chatAvatar" style="background:#B57A12">س ع</div>
+        <div style="flex:1">
+          <b id="chatName">سلمى عادل</b>
+          <small id="chatCtx">تبادل: تصميم هوية ↔ تطوير موقع</small>
+        </div>
+        <button class="btn btn-line btn-sm" onclick="openProfile('salma')">شوف البروفايل</button>
+      </div>
+
+      <div class="chat-log" id="chatLog"></div>
+
+      <div class="chat-bar">
+        <input id="chatInput" placeholder="اكتب رسالتك..." onkeydown="if(event.key==='Enter')sendMsg()">
+        <button class="btn btn-swap" onclick="sendMsg()">ابعت</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    لما التبادل يتفق عليه، بيتسجل في المحادثة نفسها كرسالة نظام — فالاتفاق موثّق ومحدش يقدر ينكره بعدين.
+  </div>
+</section>
+
+<!-- ============ الإشعارات ============ -->
+<section class="panel" id="panel-notifs">
+  <div class="section-head">
+    <h2>الإشعارات</h2>
+    <p>اللي محتاج منك رد أو تصرف</p>
+  </div>
+
+  <div class="board">
+    <div class="notif unread">
+      <div class="notif-dot"></div>
+      <div class="notif-body">
+        <b>سلمى وافقت على طلب التبادل</b>
+        <p>تصميم هوية بصرية مقابل تطوير موقع — الاتفاق اتسجل في المحادثة</p>
+        <time>من ١٢ دقيقة</time>
+      </div>
+      <button class="btn btn-swap btn-sm" onclick="goTab('chat')">افتح المحادثة</button>
+    </div>
+    <div class="notif unread">
+      <div class="notif-dot"></div>
+      <div class="notif-body">
+        <b>٣ طلاب بيدوروا على مهارة عندك دلوقتي</b>
+        <p>محتاجين تطوير مواقع React — تقدر تبعتلهم عرض</p>
+        <time>من ساعة</time>
+      </div>
+      <button class="btn btn-line btn-sm" onclick="goTab('feed')">شوفهم</button>
+    </div>
+    <div class="notif unread">
+      <div class="notif-dot"></div>
+      <div class="notif-body">
+        <b>أحمد لسه ما أكدش استلام البوستر</b>
+        <p>المبلغ هيتحرر لحسابك تلقائياً بعد يومين لو ما ردش</p>
+        <time>من ٣ ساعات</time>
+      </div>
+      <button class="btn btn-quiet btn-sm" onclick="toast('اتبعت تذكير لأحمد')">ذكّره</button>
+    </div>
+    <div class="notif">
+      <div class="notif-dot empty"></div>
+      <div class="notif-body">
+        <b>مروان قيّمك ٥ نجوم</b>
+        <p>«شرح ممتاز وصبور جداً، استفدت أكتر من المحاضرة نفسها»</p>
+        <time>امبارح</time>
+      </div>
+    </div>
+    <div class="notif">
+      <div class="notif-dot empty"></div>
+      <div class="notif-body">
+        <b>كسبت شارة «مُبادل موثوق»</b>
+        <p>١٠ تبادلات مكتملة من غير أي نزاع</p>
+        <time>من يومين</time>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ الطلبات ============ -->
+<section class="panel" id="panel-orders">
+  <div class="section-head">
+    <h2>طلباتي</h2>
+    <p>الطلبات المدفوعة والتبادلات في مكان واحد</p>
+  </div>
+
+  <div class="order">
+    <div class="order-top">
+      <div>
+        <h3>تصميم هوية بصرية لمشروع التخرج</h3>
+        <div class="with">مع سلمى عادل · تبادل مقابل تطوير موقع</div>
+      </div>
+      <span class="pill swap">قيد التنفيذ</span>
+    </div>
+    <div class="steps" aria-hidden="true">
+      <div class="step done"></div><div class="step done"></div><div class="step"></div><div class="step"></div>
+    </div>
+    <div class="step-labels"><span>اتفقنا</span><span>شغل جاري</span><span>تسليم</span><span>تقييم</span></div>
+    <div style="display:flex;gap:9px;margin-top:14px;flex-wrap:wrap">
+      <button class="btn btn-quiet btn-sm" onclick="toast('فتح المحادثة مع سلمى')">افتح المحادثة</button>
+      <button class="btn btn-line btn-sm" onclick="toast('تم تسجيل التسليم — في انتظار تأكيد الطرف التاني')">سلّم شغلك</button>
+    </div>
+  </div>
+
+  <div class="order">
+    <div class="order-top">
+      <div>
+        <h3>بوستر فعالية نادي البرمجة</h3>
+        <div class="with">مع أحمد شريف · مدفوع ٣٥٠ ج</div>
+      </div>
+      <span class="pill paid">بانتظار تأكيدك</span>
+    </div>
+    <div class="steps" aria-hidden="true">
+      <div class="step done paid-track"></div><div class="step done paid-track"></div><div class="step done paid-track"></div><div class="step"></div>
+    </div>
+    <div class="step-labels"><span>الطلب</span><span>شغل جاري</span><span>اتسلّم</span><span>تحرير المبلغ</span></div>
+    <div class="escrow">المبلغ محجوز في المحفظة — هيتحرر لحسابك أول ما العميل يأكد استلام الشغل، أو تلقائياً بعد ٣ أيام.</div>
+    <div style="display:flex;gap:9px;margin-top:14px;flex-wrap:wrap">
+      <button class="btn btn-paid btn-sm" onclick="toast('اتبعت تذكير للعميل بتأكيد الاستلام')">ذكّر العميل</button>
+    </div>
+  </div>
+
+  <div class="order">
+    <div class="order-top">
+      <div>
+        <h3>شرح هياكل البيانات — ٣ جلسات</h3>
+        <div class="with">مع مروان طارق · تبادل مقابل مونتاج فيديو</div>
+      </div>
+      <span class="pill ghost">مكتمل · قيّمته ٥ ★</span>
+    </div>
+    <div class="steps" aria-hidden="true">
+      <div class="step done"></div><div class="step done"></div><div class="step done"></div><div class="step done"></div>
+    </div>
+    <div class="step-labels"><span>اتفقنا</span><span>شغل جاري</span><span>تسليم</span><span>تقييم</span></div>
+  </div>
+</section>
+
+<!-- ============ المجتمع ============ -->
+<section class="panel" id="panel-community">
+  <div class="section-head">
+    <h2>مجموعات الكلية</h2>
+    <p>مساحات حسب التخصص — أسئلة، فرص، ومشاريع مشتركة</p>
+  </div>
+
+  <div class="grid-3">
+    <div class="group-card">
+      <h3>مطوري الويب</h3>
+      <p>٢٤٣ عضو · ١٢ منشور جديد النهاردة</p>
+      <button class="btn btn-quiet btn-sm" onclick="toast('فتح مجموعة مطوري الويب')">افتح المجموعة</button>
+    </div>
+    <div class="group-card">
+      <h3>التصميم والهوية البصرية</h3>
+      <p>١٨٧ عضو · ٥ منشورات جديدة</p>
+      <button class="btn btn-quiet btn-sm" onclick="toast('فتح مجموعة التصميم')">افتح المجموعة</button>
+    </div>
+    <div class="group-card">
+      <h3>مذاكرة جماعية — الترم الحالي</h3>
+      <p>٣١٢ عضو · مجموعات حسب المادة</p>
+      <button class="btn btn-quiet btn-sm" onclick="toast('فتح مجموعة المذاكرة')">افتح المجموعة</button>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>أكتر ناس ساعدت زمايلها الشهر ده</h2>
+    <p>المقايضة والمساعدة المجانية بتتحسب زي الخدمات المدفوعة بالظبط</p>
+  </div>
+
+  <div class="board">
+    <div class="board-row">
+      <span class="rank">١</span>
+      <div class="avatar" style="background:#B57A12">س ع</div>
+      <span class="who">سلمى عادل</span>
+      <span class="count">١٤ عملية · ٤.٩ ★</span>
+    </div>
+    <div class="board-row">
+      <span class="rank">٢</span>
+      <div class="avatar" style="background:#4A6B8A">م ط</div>
+      <span class="who">مروان طارق</span>
+      <span class="count">١١ عملية · ٤.٧ ★</span>
+    </div>
+    <div class="board-row">
+      <span class="rank">٣</span>
+      <div class="avatar" style="background:#0F6B5C">ي م</div>
+      <span class="who">يوسف مراد (أنت)</span>
+      <span class="count">٩ عمليات · ٤.٨ ★</span>
+    </div>
+    <div class="board-row">
+      <span class="rank">٤</span>
+      <div class="avatar" style="background:#7A5B9B">ن ح</div>
+      <span class="who">نورهان حسام</span>
+      <span class="count">٧ عمليات · ٥.٠ ★</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ الحساب ============ -->
+<section class="panel" id="panel-profile">
+  <div class="section-head">
+    <h2>حسابي</h2>
+    <p>مهاراتك واحتياجاتك هي اللي المطابقة بتشتغل عليها</p>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <div style="display:flex;gap:14px;align-items:center">
+          <div class="avatar" style="background:#0F6B5C;width:52px;height:52px;font-size:17px">ي م</div>
+          <div>
+            <div style="font-size:17px;font-weight:600">يوسف مراد</div>
+            <div style="font-size:13px;color:var(--ink-soft)">حاسبات ومعلومات · سنة رابعة</div>
+            <span class="pill swap" style="margin-top:6px">طالب موثّق بإيميل الجامعة</span>
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat"><b>٢٣</b><small>عملية مكتملة</small></div>
+          <div class="stat"><b>٤.٨</b><small>متوسط التقييم</small></div>
+          <div class="stat"><b>٩٦٪</b><small>نسبة الإتمام</small></div>
+          <div class="stat"><b>١٤</b><small>رصيد مجتمعي</small></div>
+        </div>
+
+        <div style="margin-top:20px">
+          <div style="font-size:13.5px;font-weight:600">المهارات اللي بتقدمها</div>
+          <div class="tag-list">
+            <span class="tag have">تطوير مواقع React</span>
+            <span class="tag have">Node.js</span>
+            <span class="tag have">هياكل البيانات</span>
+            <span class="tag have">قواعد بيانات SQL</span>
+          </div>
+        </div>
+
+        <div style="margin-top:16px">
+          <div style="font-size:13.5px;font-weight:600">اللي محتاج مساعدة فيه</div>
+          <div class="tag-list">
+            <span class="tag need">تصميم هوية بصرية</span>
+            <span class="tag need">مونتاج فيديو</span>
+            <span class="tag need">كتابة محتوى</span>
+          </div>
+        </div>
+
+        <button class="btn btn-line btn-sm" style="margin-top:16px" onclick="openModal('skills')">عدّل مهاراتك واحتياجاتك</button>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div style="font-size:14.5px;font-weight:600;margin-bottom:4px">المواد اللي خلصتها</div>
+        <p style="font-size:12.5px;color:var(--ink-soft)">زمايلك اللي بياخدوا المواد دي دلوقتي بيوصلوا لك في المطابقة</p>
+        <div class="tag-list">
+          <span class="tag">هياكل البيانات</span>
+          <span class="tag">قواعد البيانات</span>
+          <span class="tag">تحليل الخوارزميات</span>
+          <span class="tag">هندسة البرمجيات</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div style="font-size:14.5px;font-weight:600">الشارات</div>
+        <div class="badge-row">
+          <div class="badge">
+            <div class="badge-icon">✓</div>
+            <div><b>طالب موثّق</b><small>اتأكدنا من إيميلك الجامعي</small></div>
+          </div>
+          <div class="badge">
+            <div class="badge-icon" style="background:var(--swap-soft)">⇄</div>
+            <div><b>مُبادل موثوق</b><small>١٠ تبادلات مكتملة من غير أي نزاع</small></div>
+          </div>
+          <div class="badge">
+            <div class="badge-icon" style="background:var(--paid-soft)">★</div>
+            <div><b>تقييم عالي</b><small>حافظت على ٤.٥+ لآخر ٢٠ عملية</small></div>
+          </div>
+          <div class="badge">
+            <div class="badge-icon" style="background:#EEF1EF">⏱</div>
+            <div><b>سريع في الرد</b><small>متوسط الرد أقل من ساعتين</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div style="font-size:14.5px;font-weight:600;margin-bottom:9px">المحفظة</div>
+        <div style="font-size:26px;font-weight:700;color:var(--paid)">٨٤٠ <span style="font-size:14px;font-weight:500">جنيه</span></div>
+        <div style="font-size:12.5px;color:var(--ink-soft);margin-top:3px">منهم ٣٥٠ ج محجوزة في طلب لسه ما اتأكدش</div>
+        <button class="btn btn-quiet btn-sm" style="margin-top:12px" onclick="toast('نسخة العرض بتستخدم محفظة تجريبية')">سحب الرصيد</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    نسخة العرض دي بتستخدم محفظة تجريبية بدون بوابة دفع حقيقية. ربط بوابة دفع فعلية محتاج تسجيل تجاري، فهو مخطط في المرحلة اللي بعد المشروع.
+  </div>
+</section>
+
+</div>
+
+<!-- ============ Modals ============ -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" role="dialog" aria-modal="true" id="modalBox"></div>
+</div>
+
+<!-- ============ Profile drawer ============ -->
+<div class="drawer-wrap" id="drawerWrap">
+  <div class="drawer-bg" onclick="closeProfile()"></div>
+  <aside class="drawer" id="drawerBox" role="dialog" aria-modal="true"></aside>
+</div>
+
+<!-- ============ Login gate ============ -->
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <div class="brand-mark" aria-hidden="true"></div>
+    <h2>تبادُل</h2>
+    <p>بيع مهارتك أو بادلها بمهارة تانية — جوه كليتك، مع طلاب موثوقين.</p>
+    <div class="gate-field">
+      <input id="gateEmail" value="youssef.morad@fci.edu.eg" aria-label="الإيميل الجامعي">
+      <button class="btn btn-swap" onclick="enterApp()">ادخل</button>
+    </div>
+    <p class="gate-note">التسجيل بالإيميل الجامعي بس — ده اللي بيضمن إن كل حساب على المنصة طالب حقيقي في الكلية.</p>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ---- Tabs ---- */
+document.querySelectorAll('nav.tabs button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('nav.tabs button').forEach(x=>x.setAttribute('aria-selected','false'));
+    b.setAttribute('aria-selected','true');
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('panel-'+b.dataset.tab).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+/* ---- Filters ---- */
+document.querySelectorAll('.filters button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.filters button').forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true');
+    const f=b.dataset.filter;
+    document.querySelectorAll('#feedList .post').forEach(p=>{
+      p.classList.toggle('hidden', f!=='all' && !p.dataset.kind.split(' ').includes(f));
+    });
+  });
+});
+
+/* ---- Modals ---- */
+const modals={
+  swap:{
+    title:'طلب تبادل',
+    body:`<p>وضّح المطلوب من الطرفين عشان الاتفاق يبقى واضح من الأول.</p>
+      <div class="field"><label>أنت محتاج</label><input value="تصميم هوية بصرية لمشروع التخرج"></div>
+      <div class="field"><label>أنت هتقدم في المقابل</label>
+        <select><option>تطوير موقع بـ React</option><option>مراجعة هياكل البيانات</option><option>قاعدة بيانات SQL</option></select></div>
+      <div class="field"><label>تفاصيل إضافية</label><textarea placeholder="المواعيد المناسبة، شكل التسليم المتوقع...">محتاج لوجو وألوان وخطوط، وهبنيلك الموقع كامل بالمقابل خلال أسبوعين.</textarea></div>`,
+    action:'ابعت الطلب', cls:'btn-swap', done:'اتبعت طلب التبادل — هيوصلك رد قريب'
+  },
+  paid:{
+    title:'طلب خدمة مدفوعة',
+    body:`<p>المبلغ هيتحجز في المحفظة، وما بيتحررش للطرف التاني غير لما تأكد استلام الشغل.</p>
+      <div class="field"><label>المبلغ</label><input value="٣٥٠ ج"></div>
+      <div class="field"><label>موعد التسليم المطلوب</label><input value="خلال يومين"></div>
+      <div class="field"><label>تفاصيل الطلب</label><textarea placeholder="اكتب المطلوب بالتفصيل"></textarea></div>`,
+    action:'أكّد واحجز المبلغ', cls:'btn-paid', done:'اتحجز المبلغ — الطلب بقى قيد التنفيذ'
+  },
+  new:{
+    title:'انشر فرصة جديدة',
+    body:`<div class="field"><label>نوع الفرصة</label>
+        <select><option>تبادل مهارة بمهارة</option><option>خدمة مدفوعة</option><option>مساعدة مجانية</option></select></div>
+      <div class="field"><label>العنوان</label><input placeholder="محتاج حد يعمل كذا..."></div>
+      <div class="field"><label>التفاصيل</label><textarea placeholder="اشرح المطلوب"></textarea></div>
+      <div class="field"><label>عاجل؟</label><select><option>لأ</option><option>أيوة — محتاجها خلال ٢٤ ساعة</option></select></div>`,
+    action:'انشر', cls:'btn-swap', done:'اتنشرت الفرصة — هتظهر لزمايلك دلوقتي'
+  },
+  skills:{
+    title:'مهاراتك واحتياجاتك',
+    body:`<p>كل ما القوايم دي تكون دقيقة، كل ما المطابقة تطلعلك نتايج أقرب لاحتياجك.</p>
+      <div class="field"><label>بتقدم</label><input value="React، Node.js، هياكل البيانات، SQL"></div>
+      <div class="field"><label>محتاج</label><input value="تصميم هوية بصرية، مونتاج فيديو، كتابة محتوى"></div>`,
+    action:'احفظ التعديلات', cls:'btn-swap', done:'اتحفظت — هنحدّثلك المطابقات'
+  }
+};
+
+function openModal(k){
+  const m=modals[k];
+  document.getElementById('modalBox').innerHTML=
+    `<h3>${m.title}</h3>${m.body}
+     <div class="modal-actions">
+       <button class="btn ${m.cls}" onclick="closeModal();toast('${m.done}')">${m.action}</button>
+       <button class="btn btn-quiet" onclick="closeModal()">إلغاء</button>
+     </div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+function closeModal(){document.getElementById('overlay').classList.remove('open')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+/* ---- Tab helper ---- */
+function goTab(name){
+  const b=document.querySelector(`nav.tabs button[data-tab="${name}"]`);
+  if(b){b.click();return}
+  document.querySelectorAll('nav.tabs button').forEach(x=>x.setAttribute('aria-selected','false'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(name==='notifs'){document.getElementById('bellCount').style.display='none'}
+}
+
+/* ---- Login gate ---- */
+function enterApp(){
+  document.getElementById('gate').classList.add('hide');
+  toast('أهلاً يوسف — عندك مطابقة جديدة بانتظارك');
+}
+
+/* ---- Chat ---- */
+const threads={
+  salma:{name:'سلمى عادل',initials:'س ع',color:'#B57A12',ctx:'تبادل: تصميم هوية ↔ تطوير موقع',
+    log:[
+      ['them','أهلاً يوسف! شفت طلب التبادل، الفكرة عجبتني جداً','١٠:٤٢'],
+      ['me','أهلاً سلمى، تمام. أنا محتاج لوجو وألوان وخطوط للمشروع','١٠:٤٥'],
+      ['them','والموقع اللي هتعمله ليا هيبقى إيه بالظبط؟','١٠:٤٦'],
+      ['me','بورتفوليو كامل بصفحة أعمال وصفحة تواصل، ريسبونسف على الموبايل','١٠:٤٨'],
+      ['sys','اتفقتوا على التبادل — الطلب بقى قيد التنفيذ'],
+      ['them','تمام، هبعتلك أول نسخة بكرة','١٠:٥٢']
+    ]},
+  ahmed:{name:'أحمد شريف',initials:'أ ش',color:'#4A6B8A',ctx:'طلب مدفوع: بوستر فعالية · ٣٥٠ ج',
+    log:[
+      ['them','البوستر محتاجه قبل الخميس، ينفع؟','٩:١٥'],
+      ['me','ينفع، هسلمك الأربع بالليل','٩:٢٠'],
+      ['sys','اتحجز مبلغ ٣٥٠ ج في المحفظة'],
+      ['me','اتفضل النسخة النهائية بمقاسات الطباعة','١٨:٤٠'],
+      ['them','البوستر وصلني، شكراً!','١٩:٠٢']
+    ]},
+  marwan:{name:'مروان طارق',initials:'م ط',color:'#7A5B9B',ctx:'تبادل: شرح هياكل بيانات ↔ مونتاج',
+    log:[
+      ['me','خلصنا الجلسة التانية، فاضل وحدة','١٤:٠٠'],
+      ['them','تمام، الجلسة الجاية الأحد صح؟','١٤:٠٥']
+    ]}
+};
+
+function renderChat(key){
+  const t=threads[key];
+  document.getElementById('chatName').textContent=t.name;
+  document.getElementById('chatCtx').textContent=t.ctx;
+  const av=document.getElementById('chatAvatar');
+  av.textContent=t.initials; av.style.background=t.color;
+  document.getElementById('chatLog').innerHTML=t.log.map(m=>
+    m[0]==='sys'
+      ? `<div class="sys-msg">${m[1]}</div>`
+      : `<div class="msg ${m[0]}">${m[1]}<time>${m[2]}</time></div>`
+  ).join('');
+  const log=document.getElementById('chatLog'); log.scrollTop=log.scrollHeight;
+  document.querySelector('.chat-head .btn').setAttribute('onclick',`openProfile('${key}')`);
+}
+let activeThread='salma';
+document.querySelectorAll('.thread').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.thread').forEach(x=>x.setAttribute('aria-current','false'));
+    b.setAttribute('aria-current','true');
+    activeThread=b.dataset.thread;
+    renderChat(activeThread);
+  });
+});
+function sendMsg(){
+  const i=document.getElementById('chatInput');
+  if(!i.value.trim())return;
+  const now=new Date();
+  const time=now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+  threads[activeThread].log.push(['me',i.value.trim(),time]);
+  i.value='';
+  renderChat(activeThread);
+}
+renderChat('salma');
+
+/* ---- Profile drawer ---- */
+const people={
+  salma:{name:'سلمى عادل',initials:'س ع',color:'#B57A12',dept:'فنون تطبيقية · سنة تالتة',
+    rating:'٤.٩',done:'٣١',rate:'٩٨٪',credit:'٢٢',
+    have:['تصميم هوية بصرية','تصميم واجهات UI','تصوير فوتوغرافي'],
+    need:['تطوير مواقع React','كتابة محتوى'],
+    badges:[['✓','طالبة موثّقة'],['⇄','مُبادلة موثوقة'],['★','تقييم عالي']],
+    reviews:[['مروان طارق','٥ ★','شغلها نضيف وسلمت قبل الميعاد بيوم كامل.'],
+             ['ليلى عماد','٥ ★','فهمت اللي أنا عايزاه من أول مرة، تعامل محترم جداً.']]},
+  ahmed:{name:'أحمد شريف',initials:'أ ش',color:'#4A6B8A',dept:'حاسبات · سنة تانية',
+    rating:'٤.٦',done:'٨',rate:'٩٠٪',credit:'٥',
+    have:['تنظيم فعاليات','كتابة محتوى'],
+    need:['تصميم جرافيك','مونتاج فيديو'],
+    badges:[['✓','طالب موثّق'],['⏱','سريع في الرد']],
+    reviews:[['كريم ياسر','٥ ★','واضح في طلباته ودفع من غير أي تأخير.']]},
+  marwan:{name:'مروان طارق',initials:'م ط',color:'#7A5B9B',dept:'هندسة · سنة تانية',
+    rating:'٤.٧',done:'١١',rate:'٩٤٪',credit:'١٤',
+    have:['مونتاج فيديو','موشن جرافيك'],
+    need:['هياكل البيانات','تحليل خوارزميات'],
+    badges:[['✓','طالب موثّق'],['⇄','مُبادل موثوق']],
+    reviews:[['يوسف مراد','٥ ★','مونتاج ممتاز وملتزم بالمواعيد.']]}
+};
+
+function openProfile(key){
+  const p=people[key];
+  document.getElementById('drawerBox').innerHTML=`
+    <button class="drawer-close" onclick="closeProfile()" aria-label="إغلاق">✕</button>
+    <div style="display:flex;gap:14px;align-items:center;margin-top:8px">
+      <div class="avatar" style="background:${p.color};width:54px;height:54px;font-size:17px">${p.initials}</div>
+      <div>
+        <div style="font-size:18px;font-weight:600">${p.name}</div>
+        <div style="font-size:13px;color:var(--ink-soft)">${p.dept}</div>
+        <span class="pill swap" style="margin-top:6px">طالب موثّق بإيميل الجامعة</span>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><b>${p.done}</b><small>عملية مكتملة</small></div>
+      <div class="stat"><b>${p.rating}</b><small>متوسط التقييم</small></div>
+      <div class="stat"><b>${p.rate}</b><small>نسبة الإتمام</small></div>
+      <div class="stat"><b>${p.credit}</b><small>رصيد مجتمعي</small></div>
+    </div>
+
+    <div style="margin-top:20px">
+      <div style="font-size:13.5px;font-weight:600">بيقدم</div>
+      <div class="tag-list">${p.have.map(s=>`<span class="tag have">${s}</span>`).join('')}</div>
+    </div>
+    <div style="margin-top:14px">
+      <div style="font-size:13.5px;font-weight:600">محتاج</div>
+      <div class="tag-list">${p.need.map(s=>`<span class="tag need">${s}</span>`).join('')}</div>
+    </div>
+
+    <div style="margin-top:20px">
+      <div style="font-size:13.5px;font-weight:600">الشارات</div>
+      <div class="badge-row">
+        ${p.badges.map(b=>`<div class="badge"><div class="badge-icon">${b[0]}</div><div><b>${b[1]}</b></div></div>`).join('')}
+      </div>
+    </div>
+
+    <div style="margin-top:20px">
+      <div style="font-size:13.5px;font-weight:600;margin-bottom:9px">آراء زمايله</div>
+      ${p.reviews.map(r=>`
+        <div class="card" style="margin-bottom:9px;padding:13px">
+          <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600">
+            <span>${r[0]}</span><span style="color:var(--paid)">${r[1]}</span>
+          </div>
+          <p style="font-size:12.5px;color:var(--ink-soft);margin-top:5px">${r[2]}</p>
+        </div>`).join('')}
+    </div>
+
+    <div style="display:flex;gap:9px;margin-top:18px">
+      <button class="btn btn-swap" onclick="closeProfile();openModal('swap')">ابعت طلب تبادل</button>
+      <button class="btn btn-line" onclick="closeProfile();goTab('chat')">راسله</button>
+    </div>`;
+  document.getElementById('drawerWrap').classList.add('open');
+}
+function closeProfile(){document.getElementById('drawerWrap').classList.remove('open')}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeProfile()});
+
+/* ---- Toast ---- */
+let t;
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  clearTimeout(t); t=setTimeout(()=>el.classList.remove('show'),2600);
+}
+</script>
+</body>
+</html>
